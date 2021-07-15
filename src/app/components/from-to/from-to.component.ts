@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core'
 import { IAirGapTransaction } from '@airgap/coinlib-core'
+import { FullOperationGroup } from 'src/extension/AirGapSigner'
 
 @Component({
   selector: 'beacon-from-to',
@@ -8,7 +9,10 @@ import { IAirGapTransaction } from '@airgap/coinlib-core'
 })
 export class FromToComponent {
   @Input()
-  public transaction: IAirGapTransaction | undefined
+  public transactionsPromise: Promise<IAirGapTransaction[]> | undefined
+
+  @Input()
+  public operationGroupPromise: Promise<FullOperationGroup> | undefined
 
   public displayRawData: boolean = false
 }

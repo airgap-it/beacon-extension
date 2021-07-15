@@ -12,6 +12,10 @@ import { getProtocolForNetwork, getRpcUrlForNetwork } from './extension-client/u
 
 const logger: Logger = new Logger('AirGap Signer')
 
+export interface FullOperationGroup extends TezosWrappedOperation {
+  chain_id: string
+}
+
 // tslint:disable:max-classes-per-file
 
 export class AirGapOperationProvider implements OperationProvider {
@@ -31,6 +35,16 @@ export class AirGapOperationProvider implements OperationProvider {
     const forgedTx: RawTezosTransaction = await protocol.forgeAndWrapOperations(wrappedOperation)
 
     return forgedTx.binaryTransaction
+  }
+
+  public async operationGroupFromWrappedOperation(
+    tezosWrappedOperation: TezosWrappedOperation,
+    network: Network
+  ): Promise<FullOperationGroup> {
+    const { rpcUrl }: { rpcUrl: string; apiUrl: string } = await getRpcUrlForNetwork(network)
+    const { data: block }: AxiosResponse<{ chain_id: string }> = await Axios.get(`${rpcUrl}/chains/main/blocks/head`)
+    const { data: branch } = await Axios.get(`${rpcUrl}/chains/main/blocks/head/hash`)
+    return { chain_id: block.chain_id, ...tezosWrappedOperation, branch: branch }
   }
 
   public async broadcast(network: Network, signedTx: string): Promise<string> {

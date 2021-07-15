@@ -76,7 +76,7 @@ export class SettingsService {
     const tezosNetworks: { [key in Exclude<NetworkType, NetworkType.DELPHINET>]: TezosNetwork } = {
       [NetworkType.MAINNET]: TezosNetwork.MAINNET,
       [NetworkType.EDONET]: TezosNetwork.EDONET,
-      [NetworkType.FLORENCENET]: TezosNetwork.EDONET, // TODO: UPDATE IN COINLIB
+      [NetworkType.FLORENCENET]: TezosNetwork.FLORENCENET, // TODO: UPDATE IN COINLIB
       [NetworkType.CUSTOM]: TezosNetwork.EDONET
     }
 
