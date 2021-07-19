@@ -26,7 +26,7 @@
   "private": true,
   "dependencies": {
     "@airgap/beacon-sdk": "2.2.5",
-    "@airgap/coinlib-core": "0.11.2-beta.1",
+    "@airgap/coinlib-core": "0.11.6-beta.6",
     "@angular/common": "^11.0.3",
     "@angular/core": "^11.0.3",
     "@angular/forms": "^11.0.3",
@@ -41,6 +41,7 @@
     "bignumber.js": "^9.0.0",
     "bip39": "^3.0.2",
     "core-js": "^2.5.4",
+    "json-formatter-js": "^2.3.4",
     "moment": "^2.24.0",
     "myetherwallet-blockies": "^0.1.1",
     "ngx-moment": "^3.5.0",

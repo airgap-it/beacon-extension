@@ -1,58 +1,69 @@
-<ng-container *ngIf="transaction">
-  <address-row *ngFor="let address of transaction.from" [address]="address" label="From"></address-row>
+<ng-container *ngFor="let transaction of transactionsPromise | async">
+  <ng-container *ngIf="transaction">
+    <address-row *ngFor="let address of transaction.from" [address]="address" label="From"></address-row>
 
-  <ion-row class="ion-align-items-center">
-    <ion-col size="3" class="ion-no-padding">
-      <ion-row class="ion-justify-content-center"><div class="line"></div></ion-row>
-    </ion-col>
-    <ion-col size="9" class="ion-padding-bottom">
-      <ion-label position="stacked" class="ion-text-uppercase">AMOUNT</ion-label>
-      <div class="ion-padding-bottom">
-        <span class="typography--mono ion-padding-bottom">
-          {{
-            transaction.amount | amountConverter: { protocolIdentifier: transaction.protocolIdentifier, maxDigits: 10 }
-          }}
-        </span>
-      </div>
-
-      <ng-container *ngIf="transaction.fee">
-        <ion-label position="stacked" class="ion-text-uppercase">FEE</ion-label>
-        <div [ngClass]="transaction.timestamp || transaction.data ? 'ion-padding-bottom' : ''">
-          <span class="typography--mono">
-            {{ transaction.fee | feeConverter: { protocolIdentifier: transaction.protocolIdentifier } }}
+    <ion-row class="ion-align-items-center">
+      <ion-col size="3" class="ion-no-padding">
+        <ion-row class="ion-justify-content-center"><div class="line"></div></ion-row>
+      </ion-col>
+      <ion-col size="9" class="ion-padding-bottom">
+        <ion-label position="stacked" class="ion-text-uppercase">AMOUNT</ion-label>
+        <div class="ion-padding-bottom">
+          <span class="typography--mono ion-padding-bottom">
+            {{
+              transaction.amount
+                | amountConverter: { protocolIdentifier: transaction.protocolIdentifier, maxDigits: 10 }
+            }}
           </span>
         </div>
-      </ng-container>
 
-      <ng-container *ngIf="transaction.timestamp">
-        <ion-label position="stacked" class="ion-text-uppercase">
-          Time
-        </ion-label>
-        <div [ngClass]="transaction.data ? 'ion-padding-bottom' : ''">
-          {{
-            transaction.timestamp | amFromUnix | amCalendar: { sameDay: '[Today at] HH:mm', sameElse: 'HH:mm [on] LL' }
-          }}
-        </div>
-      </ng-container>
+        <ng-container *ngIf="transaction.fee">
+          <ion-label position="stacked" class="ion-text-uppercase">FEE</ion-label>
+          <div [ngClass]="transaction.timestamp || transaction.data ? 'ion-padding-bottom' : ''">
+            <span class="typography--mono">
+              {{ transaction.fee | feeConverter: { protocolIdentifier: transaction.protocolIdentifier } }}
+            </span>
+          </div>
+        </ng-container>
 
-      <ng-container *ngIf="transaction.data">
-        <ion-label position="stacked" class="ion-text-uppercase">Data</ion-label>
-        <div>
-          {{ transaction.data }}
-        </div>
-      </ng-container>
-    </ion-col>
-  </ion-row>
+        <ng-container *ngIf="transaction.timestamp">
+          <ion-label position="stacked" class="ion-text-uppercase">
+            Time
+          </ion-label>
+          <div [ngClass]="transaction.data ? 'ion-padding-bottom' : ''">
+            {{
+              transaction.timestamp
+                | amFromUnix
+                | amCalendar: { sameDay: '[Today at] HH:mm', sameElse: 'HH:mm [on] LL' }
+            }}
+          </div>
+        </ng-container>
 
-  <address-row *ngFor="let address of transaction.to" [address]="address" label="To"></address-row>
+        <ng-container *ngIf="transaction.data">
+          <ion-label position="stacked" class="ion-text-uppercase">Data</ion-label>
+          <div>
+            {{ transaction.data }}
+          </div>
+        </ng-container>
+      </ion-col>
+    </ion-row>
 
-  <ion-row class="rawdata--container ion-padding-bottom ion-margin-bottom" *ngIf="transaction.transactionDetails">
+    <address-row *ngFor="let address of transaction.to" [address]="address" label="To"></address-row>
+  </ng-container>
+</ng-container>
+
+<ng-container>
+  <ion-row
+    class="rawdata--container ion-padding-bottom ion-margin-bottom"
+    *ngIf="operationGroupPromise | async as operationGroup"
+  >
     <ion-col class="ion-no-padding">
       <ion-item class="ion-no-padding" lines="none">
         <ion-label>Display extra transaction details</ion-label>
         <ion-toggle [(ngModel)]="displayRawData" slot="end"></ion-toggle>
       </ion-item>
-      <pre *ngIf="displayRawData" class="ion-no-margin">{{ transaction.transactionDetails | json }}</pre>
+
+      <json-formatter *ngIf="displayRawData" [json]="operationGroup"></json-formatter>
     </ion-col>
   </ion-row>
 </ng-container>

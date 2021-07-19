@@ -84,9 +84,10 @@
     </ng-container>
 
     <ion-row *ngIf="request.type === 'broadcast_request'">
-      <ng-container *ngFor="let transaction of transactions">
-        <beacon-from-to [transaction]="transaction"></beacon-from-to>
-      </ng-container>
+      <beacon-from-to
+        [transactionsPromise]="transactionsPromise"
+        [operationGroupPromise]="operationGroupPromise"
+      ></beacon-from-to>
     </ion-row>
 
     <div *ngIf="request.type === 'sign_payload_request'" class="request--container">
@@ -102,9 +103,10 @@
     </div>
 
     <div *ngIf="request.type === 'operation_request'" class="request--container">
-      <ng-container *ngFor="let transaction of transactions">
-        <beacon-from-to [transaction]="transaction"></beacon-from-to>
-      </ng-container>
+      <beacon-from-to
+        [transactionsPromise]="transactionsPromise"
+        [operationGroupPromise]="operationGroupPromise"
+      ></beacon-from-to>
     </div>
 
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
@@ -113,6 +115,10 @@
       </ion-button>
       <ion-button color="primary" (click)="done()">
         {{ confirmButtonText }}
+      </ion-button>
+
+      <ion-button color="primary" (click)="performDryRun()" *ngIf="request.type === 'operation_request'">
+        DRY RUN
       </ion-button>
     </ion-fab>
   </ng-container>

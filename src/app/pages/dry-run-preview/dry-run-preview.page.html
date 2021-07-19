@@ -1,0 +1,19 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Injection Preview</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding-horizontal ion-padding-bottom">
+  This is a preview obtained by simulating the validation of your operation.
+
+  <json-formatter [json]="dryRunPreview"></json-formatter>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-button color="primary" (click)="dismiss()">
+      Dismiss
+    </ion-button>
+  </ion-fab>
+</ion-content>

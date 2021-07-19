@@ -31,6 +31,10 @@ const routes: Routes = [
     path: 'permission-list',
     loadChildren: () =>
       import('./pages/permission-list/permission-list-routing.module').then(m => m.PermissionListPageRoutingModule)
+  },
+  {
+    path: 'dry-run-preview',
+    loadChildren: () => import('./pages/dry-run-preview/dry-run-preview.module').then(m => m.DryRunPreviewPageModule)
   }
 ]
 

@@ -68,6 +68,19 @@ export class WalletService {
       .catch(console.error)
   }
 
+  public async getAllWallets(): Promise<WalletInfo<WalletType>[]> {
+    return new Promise(resolve => {
+      this.chromeMessagingService
+        .sendChromeMessage(Action.WALLETS_GET, undefined)
+        .then((response: ExtensionMessageOutputPayload<Action.WALLETS_GET>) => {
+          if (response.data) {
+            resolve(response.data.wallets)
+          }
+        })
+        .catch(console.error)
+    })
+  }
+
   public async getActiveWallet(): Promise<void> {
     this.chromeMessagingService
       .sendChromeMessage(Action.ACTIVE_WALLET_GET, undefined)
